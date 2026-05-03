@@ -4,9 +4,7 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - CinemachineTarget
-  - Landmark
-  - Ranipokhari
+  - info
   layers:
   - Default
   - TransparentFX
