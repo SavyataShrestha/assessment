@@ -29,13 +29,16 @@ public class TrafficCar : MonoBehaviour
             speed * Time.deltaTime
         );
 
-        // Rotate ONLY on Y axis
+        // Direction
         Vector3 dir = targetPosition - transform.position;
         dir.y = 0;
 
         if (dir.sqrMagnitude > 0.01f)
         {
             Quaternion targetRot = Quaternion.LookRotation(dir);
+
+            // FIX 90 DEGREE ROTATION
+            targetRot *= Quaternion.Euler(0, -90, 0);
 
             transform.rotation = Quaternion.Slerp(
                 transform.rotation,

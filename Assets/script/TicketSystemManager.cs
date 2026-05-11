@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class TicketSystemManager : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class TicketSystemManager : MonoBehaviour
     public TextMeshProUGUI adultCountText;
     public TextMeshProUGUI childCountText;
     public TextMeshProUGUI totalCostText;
+    public TextMeshProUGUI summaryText;
 
     [Header("Settings")]
     public float adultPrice = 200.0f;
@@ -26,15 +28,37 @@ public class TicketSystemManager : MonoBehaviour
         ticketpannel.SetActive(false);
         summaryPanel.SetActive(false);
         buttonsPanel.SetActive(true);
+
+        Canvas canvas = ticketpannel.GetComponentInParent<Canvas>();
+        if (canvas != null)
+        {
+            if (canvas.GetComponent<GraphicRaycaster>() == null)
+                canvas.gameObject.AddComponent<GraphicRaycaster>();
+
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        }
+
+        if (FindObjectOfType<EventSystem>() == null)
+        {
+            GameObject es = new GameObject("EventSystem");
+            es.AddComponent<EventSystem>();
+            es.AddComponent<StandaloneInputModule>();
+        }
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Time.timeScale = 1f;
         UpdateUI();
     }
 
-    // Call this when player walks up to ticket booth
     public void OpenTicketMenu()
     {
         ticketpannel.SetActive(true);
-        Cursor.lockState = CursorLockMode.None; // unlock cursor
-        Cursor.visible = true;                  // show cursor
+        buttonsPanel.SetActive(true);
+        summaryPanel.SetActive(false);
+        ResetCounts();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     public void AddAdult()
@@ -51,26 +75,54 @@ public class TicketSystemManager : MonoBehaviour
 
     public void ShowSummary()
     {
+        if (adultCount == 0 && childCount == 0)
+        {
+            Debug.LogWarning("No tickets selected!");
+            return;
+        }
+
         buttonsPanel.SetActive(false);
         summaryPanel.SetActive(true);
+
+        float total = (adultCount * adultPrice) + (childCount * childPrice);
+
+        string summary = "";
+
+        if (adultCount > 0)
+            summary += "Adult x" + adultCount + " = Rs." + (adultCount * adultPrice) + "\n";
+
+        if (childCount > 0)
+            summary += "Child x" + childCount + " = Rs." + (childCount * childPrice) + "\n";
+
+        summary += "\nTotal: Rs." + total.ToString("F0");
+
+        if (summaryText != null)
+            summaryText.text = summary;
+        else
+            Debug.LogError("summaryText is NULL! Drag SummaryTotalText into Summary Text slot.");
     }
 
     public void CloseTicketMenu()
     {
         ticketpannel.SetActive(false);
-        Cursor.lockState = CursorLockMode.Locked; // lock cursor again
-        Cursor.visible = false;                    // hide cursor
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Time.timeScale = 1f;
         ResetCounts();
     }
 
     void UpdateUI()
     {
-        if (adultCountText != null) adultCountText.text = adultCount.ToString();
-        if (childCountText != null) childCountText.text = childCount.ToString();
+        if (adultCountText != null)
+            adultCountText.text = adultCount.ToString();
+
+        if (childCountText != null)
+            childCountText.text = childCount.ToString();
+
         if (totalCostText != null)
         {
             float total = (adultCount * adultPrice) + (childCount * childPrice);
-            totalCostText.text = "Total: Rs " + total.ToString("F0");
+            totalCostText.text = "Total: Rs." + total.ToString("F0");
         }
     }
 
