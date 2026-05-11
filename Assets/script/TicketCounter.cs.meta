@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: bd731e7f8954cdc4482187c12de70784
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - player: {instanceID: 0}
+  - ticketPanel: {fileID: 919132149155446097, guid: 14c27071057ea1d43ab133369510f77d, type: 3}
+  - pressEText: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
