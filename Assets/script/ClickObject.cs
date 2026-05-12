@@ -1,17 +1,21 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class ClickObject : MonoBehaviour
 {
     public GameObject infoPanel;
 
-    public TMP_Text titleText;
+   
     public TMP_Text descriptionText;
 
+    public Image displayImage;     // UI Image in Canvas
+    public Sprite objectSprite;    // Image for this object
+
     public string objectTitle;
+
     [TextArea]
     public string objectDescription;
- 
 
     private CanvasGroup canvasGroup;
 
@@ -52,8 +56,10 @@ public class ClickObject : MonoBehaviour
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
 
-        titleText.text = objectTitle;
+      
         descriptionText.text = objectDescription;
+
+        displayImage.sprite = objectSprite;
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
