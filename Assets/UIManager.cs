@@ -1,5 +1,7 @@
-using UnityEngine;
 using TMPro;
+using Unity.Burst.Intrinsics;
+using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
@@ -14,7 +16,7 @@ public class UIManager : MonoBehaviour
     public void ShowDescription()
     {
         infoPanel.SetActive(true);
-        infoText.text = "The game is related to our historical places. in this game, the players are able to move our the surroundings and explore the places like ranipokhari, dharara, ghataghar and tudikhel . they can also find the information about the places attach near the place. the player can also purchase tickets to go to dharara.";
+        infoText.text = "The game is related to our historical places.In this game, the players are able to move around the surroundings and explore the places like Ranipokhari, Dharara, Ghataghar and Tudikhel.They can also find information about the places attached near each location. The player can also purchase tickets to visit Dharara." ;
     }
      public void HideDescription()
     {
